@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espiral</title>
+  <link rel="stylesheet" href="./espiral.css">
+</head>
+
+<body>
+
+  <div id="control-bar-wrapper">
+    <div id="control-bar">
+      <button id="sound-toggle" class="toggle" type="button" data-toggled="false" onClick="handleSoundToggle()" title="Toggle Pulse">
+        <i class="fa-solid fa-music-slash off"></i>
+        <i class="fa-solid fa-music on"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div id="background-image"></div>
+  
+  <div id="background-filter"></div>
+  
+  <div id="logo">
+    <img src="https://assets.codepen.io/1468070/Hyperplexed+Logo+-+White.png" alt="" />
+  </div>
+  
+  <div id="sound-message">
+    <p>Click anywhere to toggle sound</p>
+  </div>
+  <canvas id="paper"></canvas>
+
+
+
+  <script src="./main.js"></script>
+</body>
+
+</html>
