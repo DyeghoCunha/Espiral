@@ -12,7 +12,7 @@ Projeto desenvolvido para fixar conteúdo das aulas de JavaScript
 | :rocket: URL         | https://star-wars-cine.vercel.app
 >>>>>>> Responsivo
 
-
+espiral.vercel.app
 <!-- Inserir imagem com a #vitrinedev ao final do link -->
 ![](https://github.com/DyeghoCunha/sw_cine/blob/master/sw-cineCover.png#vitrinedev)
 
