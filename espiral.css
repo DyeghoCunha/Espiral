@@ -21,8 +21,8 @@ canvas {
 
 #logo {
   position: fixed;
-  left: 50%;
-  top: 50%;
+  left: 48%;
+  top:47.2%;
   transform: translate(-50%, -50%);
   z-index: 15;
   opacity: 1;
@@ -30,9 +30,7 @@ canvas {
   pointer-events: none;
 }
 
-#logo>img {
-  height: 6.2vmin;
-}
+
 
 #background-image,
 #background-filter {
@@ -77,27 +75,26 @@ canvas {
   border: none;
   outline: none;
   cursor: pointer;
+  border-radius: 50%;
 }
 
 .toggle:is(:hover, :focus-visible) {
   background-color: rgb(255 255 255 / 15%);
 }
 
-.toggle>i {
-  color: white;
+.toggle>img {
+
   display: none;
   height: 1rem;
   width: 1rem;
-  font-size: 0.6rem;
-  line-height: 1rem;
   text-align: center;
 }
 
-.toggle[data-toggled="true"]>i.on {
+.toggle[data-toggled="true"]>img.on {
   display: block;
 }
 
-.toggle[data-toggled="false"]>i.off {
+.toggle[data-toggled="false"]>img.off {
   display: block;
 }
 
@@ -114,14 +111,19 @@ canvas {
   pointer-events: none;
 }
 
-body:has(#sound-toggle[data-toggled="true"]) #sound-message {
+body:has(#sound-toggle[data-toggled="true"]) #sound-message #logoMeu{
   opacity: 0;
 }
 
 #sound-message>p {
-  color: white;
-  font-size: 0.9rem;
+  position: absolute;
+  top: 1000%;
+  left: -300%;
+  color: rgb(14, 255, 255);
+  font-size: 2rem;
   white-space: nowrap;
+  z-index: 10000;
+ 
 }
 
 
@@ -268,4 +270,14 @@ padding: 40px 0px;
 
 .container2 {
   z-index: 10;
+}
+
+#logoMeu{
+  color: aquamarine;
+  z-index: 10000;
+  position: absolute;
+  bottom: 1%;
+  right: 2%;
+  transition: opacity 1000ms;
+  pointer-events: none;
 }

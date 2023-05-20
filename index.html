@@ -13,16 +13,7 @@
 
 <body>
 
-  <div id="control-bar-wrapper">
-    <div id="control-bar">
-      <button id="sound-toggle" class="toggle" type="button" data-toggled="false" onClick="handleSoundToggle()"
-        title="Toggle Pulse">
-        <i class="fa-solid fa-music-slash off"></i>
-        <i class="fa-solid fa-music on"></i>
 
-      </button>
-    </div>
-  </div>
 
 
   <div id="background-image"></div>
@@ -30,13 +21,26 @@
   <div id="background-filter"></div>
 
   <div id="logo">
-    <img src="./img/jangofett.png" alt="" />
+    <!-- <img src="./img/jangofett.png" alt="" /> -->
+    <div id="control-bar-wrapper">
+
+      <div id="control-bar">
+
+        <button id="sound-toggle" class="toggle" type="button" data-toggled="false" onClick="handleSoundToggle()"
+          title="Toggle Pulse">
+          <img class="off" src="/img/1.png" alt="">
+          <img  class="on" src="/img/2.png" alt="">
+  
+        </button>
+        <div id="sound-message">
+          <!-- <p>Click e Relaxe</p> -->
+        </div>
+      
+      </div>
+    </div>
 
   </div>
 
-  <div id="sound-message">
-    <p></p>
-  </div>
 
   
     
@@ -52,7 +56,7 @@
   <canvas class="container2" id="paper"></canvas>
 
 
-
+       <h3 id="logoMeu">Desenvolvido por Dyegho Cunha</h3>
   <script src="./main.js"></script>
 </body>
 
