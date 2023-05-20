@@ -1,7 +1,7 @@
 html,
 body {
   height: 100vh;
-  background-color: black;
+  width: 100vw;
   overflow: hidden;
   font-family: "Noto Sans", sans-serif;
 }
@@ -15,19 +15,20 @@ body {
 canvas {
   height: 100vh;
   width: 100vw;
-  position: relative;
+  position: absolute;
   z-index: 9;
 }
 
 #logo {
-  position: fixed;
-  left: 48%;
-  top:47.2%;
-  transform: translate(-50%, -50%);
+position: absolute;
+
   z-index: 15;
   opacity: 1;
-  white-space: nowrap;
+ 
   pointer-events: none;
+  left:49.5%;
+  top: 45.8%;
+  transform: translate(-50%, -50%);
 }
 
 
@@ -50,10 +51,7 @@ canvas {
   /* filter: blur(4px) grayscale(30%); */
 }
 
-#background-filter {
-  z-index: 2;
-  /* background: radial-gradient(rgb(0 0 0 / 60%) 50%, transparent); */
-}
+
 
 #control-bar-wrapper {
   width: 100%;
@@ -64,6 +62,8 @@ canvas {
   left: 0px;
   z-index: 10;
   padding: 0.5rem;
+ 
+  
 }
 
 .toggle {
@@ -76,10 +76,12 @@ canvas {
   outline: none;
   cursor: pointer;
   border-radius: 50%;
+  z-index: 10000000;
 }
 
 .toggle:is(:hover, :focus-visible) {
   background-color: rgb(255 255 255 / 15%);
+  z-index: 10000000;
 }
 
 .toggle>img {
@@ -88,6 +90,7 @@ canvas {
   height: 1rem;
   width: 1rem;
   text-align: center;
+  z-index: 10000000;
 }
 
 .toggle[data-toggled="true"]>img.on {
@@ -98,19 +101,19 @@ canvas {
   display: block;
 }
 
-#sound-message {
+/* #sound-message {
   position: fixed;
   top: 36%;
   left: 50%;
   translate: -50% -50%;
   z-index: 3;
   padding: 0.75rem;
-  background-color: rgb(255 255 255 / 5%);
+  background-color: rgba(241, 16, 16, 0.05);
   border-radius: 0.4rem;
   transition: opacity 1000ms;
   pointer-events: none;
 }
-
+ */
 body:has(#sound-toggle[data-toggled="true"]) #sound-message #logoMeu{
   opacity: 0;
 }
@@ -141,28 +144,33 @@ body:has(#sound-toggle[data-toggled="true"]) #sound-message #logoMeu{
 
 
 .loader {
-  top: 25.25%;
-  left: 4%;
+ 
   position: absolute;
-  width: 100%;
   display: flex;
   z-index: 10;
-overflow: hidden;
-padding: 40px 0px;
+  overflow: hidden;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
 }
 
 /* Inicio Circulo Externo */
 .loader .circuloColorido {
-  position: relative;
-  width: var(--botaoLargura);
-  height: var(--botaoAltura);
+  position: absolute;
+  width: 45%;
+  height: 90%;
   background: white;
   border: 3px solid white;
   border-radius: 50%;
   box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.5),
     8px 8px 25px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
 
 }
 
@@ -179,7 +187,7 @@ padding: 40px 0px;
   content: '';
   position: absolute;
   inset: 10px;
-  background: white;
+  background: rgb(243, 240, 240);
   border: 1px solid white;
   border-radius: 50%;
   box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.5),
@@ -196,7 +204,6 @@ padding: 40px 0px;
   border-radius: 50%;
   filter: blur(5px);
   background: linear-gradient(rgba(0, 255, 255, 1),rgba(0, 255, 128, 1),rgba(0, 255, 128, 1),rgba(0, 255, 255, 1));
-
   background-position: center;
   animation: animate 6s linear infinite;
 
@@ -206,17 +213,19 @@ padding: 40px 0px;
 
 /* Inicio Circulo Externo */
 .loader .circuloColorido2 {
-  top: 43.5%;
-  left: 40.5%;
+
   position: absolute;
-  width: 15%;
-  height: 13%;
+  width: 7%;
+  height: 14%;
   background: white;
   border: 1px solid white;
   border-radius: 50%;
   box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.5),
     8px 8px 25px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
 }
 
