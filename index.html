@@ -16,11 +16,7 @@
   <div id="logo">
     <div id="control-bar-wrapper">
       <div id="control-bar">
-        <button id="alternar-som" class="toggle" type="button" data-toggled="false" onClick="alternarSom()"
-          title="Toggle Pulse">
-          <img class="off" src="/img/1.png" alt="">
-          <img  class="on" src="/img/2.png" alt="">
-        </button>
+ 
         <div id="sound-message">
           <!-- <p>Click e Relaxe</p> -->
         </div>
@@ -29,10 +25,16 @@
 
   </div>
 
-  <div class="loader">
+  <div class="loader" id="containerExterior">
   <span class="circuloColorido"><i class="coresCirculo"></i></span>
   
-    <span class="circuloColorido2"><i class="coresCirculo2"></i></span>
+    <span class="circuloColorido2"><i class="coresCirculo2">
+      <button id="alternar-som" class="toggle" type="button" data-toggled="false" onClick="alternarSom()"
+      title="Toggle Pulse">
+      <img class="off" src="/img/1.png" alt="">
+      <img  class="on" src="/img/2.png" alt="">
+    </button>
+    </i></span>
   </div>
   <canvas class="container2" id="papel"></canvas>
 
