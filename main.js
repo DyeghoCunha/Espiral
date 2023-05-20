@@ -8,7 +8,27 @@ const toggles = {
   sound: get("#sound-toggle")
 }
 
-const colors = Array(21).fill("#FEDCD1");
+const colors = [];
+
+const initialColor = [68, 209, 201]; // Cor inicial: rgba(68, 209, 201, 1)
+const finalColor = [255, 255, 255]; // Cor final: branco
+
+const step = [
+  (finalColor[0] - initialColor[0]) / 19, // R
+  (finalColor[1] - initialColor[1]) / 19, // G
+  (finalColor[2] - initialColor[2]) / 19  // B
+];
+
+for (let i = 0; i < 21; i++) {
+  const color = [
+    Math.round(initialColor[0] + step[0] * i),
+    Math.round(initialColor[1] + step[1] * i),
+    Math.round(initialColor[2] + step[2] * i)
+  ];
+  const rgbaColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
+  colors.push(rgbaColor);
+}
+
 
 const settings = {
   startTime: new Date().getTime(), // This can be in the future
@@ -149,10 +169,10 @@ const draw = () => { // Definitely not optimized
     const radius = base.initialRadius + (base.spacing * index);
 
     pen.globalAlpha = determineOpacity(currentTime, arc.lastImpactTime, 0.15, 0.65, 1000);
-    pen.lineWidth = base.length * 0.002;
+    pen.lineWidth = base.length * 0.02;
     pen.strokeStyle = arc.color;
     
-    const offset = base.circleRadius * (5 / 3) / radius;
+    const offset = base.circleRadius * (5 / 2) / radius;
     
     drawArc(center.x, center.y, radius, Math.PI + offset, (2 * Math.PI) - offset);
     
@@ -174,7 +194,8 @@ const draw = () => { // Definitely not optimized
     const radius = base.initialRadius + (base.spacing * index);
 
     pen.globalAlpha = 1;
-    pen.fillStyle = arc.color;
+    //pen.fillStyle = arc.color;
+    pen.fillStyle = colors[1];
     
     if(currentTime >= arc.nextImpactTime) {      
       if(settings.soundEnabled) {

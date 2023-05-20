@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Espiral</title>
   <link rel="stylesheet" href="./espiral.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 
 <body>
@@ -16,22 +18,26 @@
       <button id="sound-toggle" class="toggle" type="button" data-toggled="false" onClick="handleSoundToggle()" title="Toggle Pulse">
         <i class="fa-solid fa-music-slash off"></i>
         <i class="fa-solid fa-music on"></i>
+        
       </button>
     </div>
   </div>
+  
   
   <div id="background-image"></div>
   
   <div id="background-filter"></div>
   
   <div id="logo">
-    <img src="https://assets.codepen.io/1468070/Hyperplexed+Logo+-+White.png" alt="" />
+    <img src="./img/jangofett.png" alt="" />
+    
   </div>
   
   <div id="sound-message">
-    <p>Click anywhere to toggle sound</p>
+    <p></p>
   </div>
-  <canvas id="paper"></canvas>
+ 
+  <canvas class="container" id="paper"></canvas>
 
 
 
