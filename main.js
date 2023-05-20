@@ -130,7 +130,7 @@ const draw = () => { // Definitely not optimized
   const currentTime = new Date().getTime(),
         elapsedTime = (currentTime - settings.startTime) / 1000;
   
-  const length = Math.min(window.innerWidth, window.innerHeight) * 0.9,
+  const length = Math.min(window.innerWidth, window.innerHeight) * 0.8,
         offset = (window.innerWidth - length) / 2;
   
   const start = {
@@ -155,7 +155,7 @@ const draw = () => { // Definitely not optimized
     maxAngle: 2 * Math.PI
   }
 
-  base.initialRadius = base.length * 0.05;
+  base.initialRadius = base.length * 0.1;
   base.circleRadius = base.length * 0.006;
   base.clearance = base.length * 0.03;
   base.spacing = (base.length - base.initialRadius - base.clearance) / 2 / colors.length;
@@ -165,7 +165,7 @@ const draw = () => { // Definitely not optimized
 
   pen.lineCap = "round";
 
-  arcs.forEach((arc, index) => { // Draw arcs
+  arcs.forEach((arc, index) => { 
     const radius = base.initialRadius + (base.spacing * index);
 
     pen.globalAlpha = determineOpacity(currentTime, arc.lastImpactTime, 0.15, 0.65, 1000);
@@ -195,7 +195,7 @@ const draw = () => { // Definitely not optimized
 
     pen.globalAlpha = 1;
     //pen.fillStyle = arc.color;
-    pen.fillStyle = colors[1];
+   pen.fillStyle = colors[1];
     
     if(currentTime >= arc.nextImpactTime) {      
       if(settings.soundEnabled) {
