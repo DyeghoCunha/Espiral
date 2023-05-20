@@ -1,220 +1,221 @@
+const papel = document.getElementById("papel"),
+      caneta = papel.getContext("2d");
 
-const paper = document.getElementById("paper"),
-      pen = paper.getContext("2d");
+const obter = seletor => document.getElementById(seletor);
 
-const get = selector => document.querySelector(selector);
-
-const toggles = {
-  sound: get("#sound-toggle")
+const comandos = {
+  som: obter("alternar-som")
 }
 
-const colors = [];
+const cores = [];
 
-const initialColor = [68, 209, 201]; // Cor inicial: rgba(68, 209, 201, 1)
-const finalColor = [255, 255, 255]; // Cor final: branco
+const corInicial = [68, 209, 201]; // Cor inicial: rgba(68, 209, 201, 1)
+const corFinal = [255, 255, 255]; // Cor final: branco
 
-const step = [
-  (finalColor[0] - initialColor[0]) / 19, // R
-  (finalColor[1] - initialColor[1]) / 19, // G
-  (finalColor[2] - initialColor[2]) / 19  // B
+const passo = [
+  (corFinal[0] - corInicial[0]) / 19, // R
+  (corFinal[1] - corInicial[1]) / 19, // G
+  (corFinal[2] - corInicial[2]) / 19  // B
 ];
 
 for (let i = 0; i < 21; i++) {
-  const color = [
-    Math.round(initialColor[0] + step[0] * i),
-    Math.round(initialColor[1] + step[1] * i),
-    Math.round(initialColor[2] + step[2] * i)
+  const cor = [
+    Math.round(corInicial[0] + passo[0] * i),
+    Math.round(corInicial[1] + passo[1] * i),
+    Math.round(corInicial[2] + passo[2] * i)
   ];
-  const rgbaColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
-  colors.push(rgbaColor);
+  const corRgba = `rgba(${cor[0]}, ${cor[1]}, ${cor[2]}, 1)`;
+  cores.push(corRgba);
 }
 
 
-const settings = {
-  startTime: new Date().getTime(), // This can be in the future
-  duration: 900, // Total time for all dots to realign at the starting point
-  maxCycles: Math.max(colors.length, 100), // Must be above colors.length or else...
-  soundEnabled: false, // User still must interact with screen first
-  pulseEnabled: true, // Pulse will only show if sound is enabled as well
+const configuracoes = {
+  horaInicio: new Date().getTime(), // Isso pode estar no futuro
+  duracao: 900/3, // Tempo total para todos os pontos se realinharem no ponto de partida
+  maxCiclos: Math.max(cores.length, 100), // Deve ser maior que o tamanho de cores, senão...
+  somHabilitado: false, // O usuário ainda precisa interagir com a tela primeiro
+  pulsoHabilitado: true, // O pulso só será exibido se o som também estiver habilitado
   instrument: "vibraphone" // "default" | "wave" | "vibraphone"
 }
 
-const getFileName = index => {
-  if(settings.instrument === "default") return `key-${index}`; 
+const obterNomeArquivo = index => {
+  if(configuracoes.instrument === "default") return `key-${index}`; 
   
-  return `${settings.instrument}-key-${index}`;
+  return `${configuracoes.instrument}-key-${index}`;
 }
  
-const getUrl = index => `https://assets.codepen.io/1468070/${getFileName(index)}.wav`;
+const obterUrl = indice => `Som/${obterNomeArquivo(indice)}.wav`;
 
-const handleSoundToggle = (enabled = !settings.soundEnabled) => {  
-  settings.soundEnabled = enabled;
-  toggles.sound.dataset.toggled = enabled;
+
+const alternarSom = (habilitado = !configuracoes.somHabilitado) => {  
+  configuracoes.somHabilitado = habilitado;
+  comandos.som.dataset.toggled = habilitado;
 }
 
-document.onvisibilitychange = () => handleSoundToggle(false);
+document.onvisibilitychange = () => alternarSom(false);
 
-paper.onclick = () => handleSoundToggle();
+papel.onclick = () => alternarSom();
 
-let arcs = [];
+let arcos = [];
 
-const calculateVelocity = index => {  
-    const numberOfCycles = settings.maxCycles - index,
-          distancePerCycle = 2 * Math.PI;
+const calcularVelocidade = indice => {  
+    const numeroCiclos = configuracoes.maxCiclos - indice,
+          distanciaPorCiclo = 2 * Math.PI;
   
-  return (numberOfCycles * distancePerCycle) / settings.duration;
+  return (numeroCiclos * distanciaPorCiclo) / configuracoes.duracao;
 }
 
-const calculateNextImpactTime = (currentImpactTime, velocity) => {
-  return currentImpactTime + (Math.PI / velocity) * 1000;
+const calcularProximoTempoImpacto = (tempoImpactoAtual, velocidade) => {
+  return tempoImpactoAtual + (Math.PI / velocidade) * 1000;
 }
 
-const calculateDynamicOpacity = (currentTime, lastImpactTime, baseOpacity, maxOpacity, duration) => {
-  const timeSinceImpact = currentTime - lastImpactTime,
-        percentage = Math.min(timeSinceImpact / duration, 1),
-        opacityDelta = maxOpacity - baseOpacity;
+const calcularOpacidadeDinamica = (tempoAtual, ultimoTempoImpacto, opacidadeBase, opacidadeMaxima, duracao) => {
+  const tempoDesdeImpacto = tempoAtual - ultimoTempoImpacto,
+        porcentagem = Math.min(tempoDesdeImpacto / duracao, 1),
+        deltaOpacidade = opacidadeMaxima - opacidadeBase;
   
-  return maxOpacity - (opacityDelta * percentage);
+  return opacidadeMaxima - (deltaOpacidade * porcentagem);
 }
 
-const determineOpacity = (currentTime, lastImpactTime, baseOpacity, maxOpacity, duration) => {
-  if(!settings.pulseEnabled) return baseOpacity;
+const determinarOpacidade = (tempoAtual, ultimoTempoImpacto, opacidadeBase, opacidadeMaxima, duracao) => {
+  if(!configuracoes.pulsoHabilitado) return opacidadeBase;
   
-  return calculateDynamicOpacity(currentTime, lastImpactTime, baseOpacity, maxOpacity, duration);
+  return calcularOpacidadeDinamica(tempoAtual, ultimoTempoImpacto, opacidadeBase, opacidadeMaxima, duracao);
 }
 
-const calculatePositionOnArc = (center, radius, angle) => ({
-  x: center.x + radius * Math.cos(angle),
-  y: center.y + radius * Math.sin(angle)
+const calcularPosicaoNoArco = (centro, raio, angulo) => ({
+  x: centro.x + raio * Math.cos(angulo),
+  y: centro.y + raio * Math.sin(angulo)
 });
 
-const playKey = index => {  
-  const audio = new Audio(getUrl(index));
+const tocarTecla = indice => {  
+  const audio = new Audio(obterUrl(indice));
 
   audio.volume = 0.15;
 
   audio.play();
 }
 
-const init = () => {
-  arcs = colors.map((color, index) => {
-    const velocity = calculateVelocity(index),
-          lastImpactTime = 0,
-          nextImpactTime = calculateNextImpactTime(settings.startTime, velocity);
+const inicializar = () => {
+  arcos = cores.map((cor, indice) => {
+    const velocidade = calcularVelocidade(indice),
+          ultimoTempoImpacto = 0,
+          proximoTempoImpacto = calcularProximoTempoImpacto(configuracoes.horaInicio, velocidade);
 
     return {
-      color,
-      velocity,
-      lastImpactTime,
-      nextImpactTime
+      cor,
+      velocidade,
+      ultimoTempoImpacto,
+      proximoTempoImpacto
     }
   });
 }
 
-const drawArc = (x, y, radius, start, end, action = "stroke") => {
-  pen.beginPath();
+const desenharArco = (x, y, raio, inicio, fim, acao = "contorno") => {
+  caneta.beginPath();
   
-  pen.arc(x, y, radius, start, end);
+  caneta.arc(x, y, raio, inicio, fim);
   
-  if(action === "stroke") pen.stroke();    
-  else pen.fill();
+  if(acao === "contorno") caneta.stroke();    
+  else caneta.fill();
 }
 
-const drawPointOnArc = (center, arcRadius, pointRadius, angle) => {
-  const position = calculatePositionOnArc(center, arcRadius, angle);
+const desenharPontoNoArco = (centro, raioArco, raioPonto, angulo) => {
+  const posicao = calcularPosicaoNoArco(centro, raioArco, angulo);
 
-  drawArc(position.x, position.y, pointRadius, 0, 2 * Math.PI, "fill");    
+  desenharArco(posicao.x, posicao.y, raioPonto, 0, 2 * Math.PI, "fill");    
 }
 
-const draw = () => { // Definitely not optimized
-  const currentTime = new Date().getTime(),
-        elapsedTime = (currentTime - settings.startTime) / 1000;
+const desenhar = () => { // Definitivamente não está otimizado
+  const tempoAtual = new Date().getTime(),
+        tempoDecorrido = (tempoAtual - configuracoes.horaInicio) / 1000;
   
-  const length = Math.min(window.innerWidth, window.innerHeight) * 0.8,
-        offset = (window.innerWidth - length) / 2;
+  const comprimento = Math.min(window.innerWidth, window.innerHeight) * 0.8,
+        deslocamento = (window.innerWidth - comprimento) / 2;
   
-  const start = {
-    x: offset,
+  const inicio = {
+    x: deslocamento,
     y: window.innerHeight / 2
   }
 
-  const end = {
-    x: window.innerWidth - offset,
+  const fim = {
+    x: window.innerWidth - deslocamento,
     y: window.innerHeight / 2
   }
 
-  const center = {
+  const centro = {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2
   }
 
   const base = {
-    length: end.x - start.x,
-    minAngle: 0,
-    startAngle: 0,
-    maxAngle: 2 * Math.PI
+    comprimento: fim.x - inicio.x,
+    anguloMinimo: 0,
+    anguloInicio: 0,
+    anguloMaximo: 2 * Math.PI
   }
 
-  base.initialRadius = base.length * 0.1;
-  base.circleRadius = base.length * 0.006;
-  base.clearance = base.length * 0.03;
-  base.spacing = (base.length - base.initialRadius - base.clearance) / 2 / colors.length;
+  base.raioInicial = base.comprimento * 0.1;
+  base.raioCirculo = base.comprimento * 0.006;
+  base.espacamento = (base.comprimento - base.raioInicial - base.raioCirculo) / 2 / cores.length;
 
-  paper.width = paper.clientWidth;
-  paper.height = paper.clientHeight;
+  papel.width = papel.clientWidth;
+  papel.height = papel.clientHeight;
 
-  pen.lineCap = "round";
+  caneta.lineCap = "round";
 
-  arcs.forEach((arc, index) => { 
-    const radius = base.initialRadius + (base.spacing * index);
+  arcos.forEach((arco, indice) => { 
 
-    pen.globalAlpha = determineOpacity(currentTime, arc.lastImpactTime, 0.15, 0.65, 1000);
-    pen.lineWidth = base.length * 0.02;
-    pen.strokeStyle = arc.color;
+
+    const raio = base.raioInicial + (base.espacamento * indice);
+
+    caneta.globalAlpha = determinarOpacidade(tempoAtual, arco.ultimoTempoImpacto, 0.15, 0.65, 1000);
+    caneta.lineWidth = base.comprimento * 0.02;
+    caneta.strokeStyle = arco.cor;
     
-    const offset = base.circleRadius * (5 / 2) / radius;
+    const deslocamento = base.raioCirculo * (5 / 2) / raio;
     
-    drawArc(center.x, center.y, radius, Math.PI + offset, (2 * Math.PI) - offset);
+    desenharArco(centro.x, centro.y, raio, Math.PI + deslocamento, (2 * Math.PI) - deslocamento);
     
-    drawArc(center.x, center.y, radius, offset, Math.PI - offset);
+    desenharArco(centro.x, centro.y, raio, deslocamento, Math.PI - deslocamento);
   });
   
-  arcs.forEach((arc, index) => { // Draw impact points
-    const radius = base.initialRadius + (base.spacing * index);
+  arcos.forEach((arco, indice) => { // Desenhar pontos de impacto
+    const raio = base.raioInicial + (base.espacamento * indice);
 
-    pen.globalAlpha = determineOpacity(currentTime, arc.lastImpactTime, 0.15, 0.85, 1000);
-    pen.fillStyle = arc.color;
+    caneta.globalAlpha = determinarOpacidade(tempoAtual, arco.ultimoTempoImpacto, 0.15, 0.85, 1000);
+    caneta.fillStyle = arco.cor;
     
-    drawPointOnArc(center, radius, base.circleRadius * 0.75, Math.PI);
+    desenharPontoNoArco(centro, raio, base.raioCirculo * 0.75, Math.PI);
     
-    drawPointOnArc(center, radius, base.circleRadius * 0.75, 2 * Math.PI);
+    desenharPontoNoArco(centro, raio, base.raioCirculo * 0.75, 2 * Math.PI);
   });
 
-  arcs.forEach((arc, index) => { // Draw moving circles
-    const radius = base.initialRadius + (base.spacing * index);
+  arcos.forEach((arco, indice) => { // Desenhar círculos em movimento
+    const raio = base.raioInicial + (base.espacamento * indice);
 
-    pen.globalAlpha = 1;
-    //pen.fillStyle = arc.color;
-   pen.fillStyle = colors[1];
+    caneta.globalAlpha = 1;
+    //caneta.fillStyle = arco.cor;
+    caneta.fillStyle = cores[1];
     
-    if(currentTime >= arc.nextImpactTime) {      
-      if(settings.soundEnabled) {
-        playKey(index);
-        arc.lastImpactTime = arc.nextImpactTime;
+    if(tempoAtual >= arco.proximoTempoImpacto) {      
+      if(configuracoes.somHabilitado) {
+        tocarTecla(indice);
+        arco.ultimoTempoImpacto = arco.proximoTempoImpacto;
       }
       
-      arc.nextImpactTime = calculateNextImpactTime(arc.nextImpactTime, arc.velocity);      
+      arco.proximoTempoImpacto = calcularProximoTempoImpacto(arco.proximoTempoImpacto, arco.velocidade);      
     }
     
-    const distance = elapsedTime >= 0 ? (elapsedTime * arc.velocity) : 0,
-          angle = (Math.PI + distance) % base.maxAngle;
+    const distancia = tempoDecorrido >= 0 ? (tempoDecorrido * arco.velocidade) : 0,
+          angulo = (Math.PI + distancia) % base.anguloMaximo;
     
-    drawPointOnArc(center, radius, base.circleRadius, angle);
+    desenharPontoNoArco(centro, raio, base.raioCirculo, angulo);
   });
   
-  requestAnimationFrame(draw);
+  requestAnimationFrame(desenhar);
 }
 
-init();
+inicializar();
 
-draw();
+desenhar();
