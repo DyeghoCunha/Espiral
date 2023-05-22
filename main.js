@@ -231,3 +231,7 @@ const desenhar = () => { // Definitivamente não está otimizado
 inicializar();
 
 desenhar();
+
+var x = 10;
+console.log(x + y);
+let y = 15;
